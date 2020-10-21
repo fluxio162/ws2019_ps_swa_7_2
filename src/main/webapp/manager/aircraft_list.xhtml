@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name ="content">
+        <h:form id="aircraftForm">
+            <p:dataTable id="aircraftsTable" var="aircraft" widgetVar="aircraft" value="#{aircraftListController.aircraft}" scrollable="true" scrollHeight="500" style="text-align: center">
+
+                <p:column headerText="AircraftID" filterBy="#{aircraft.aircraftId}" sortBy="#{aircraft.aircraftId}">
+                    <h:outputText value="#{aircraft.aircraftId}"/>
+                </p:column>
+
+                <p:column headerText="Seats" filterBy="#{aircraft.seats}" filterMatchMode="exact" sortBy="#{aircraft.seats}">
+                    <h:outputText value="#{aircraft.seats}"/>
+                </p:column>
+
+                <p:column headerText="Pilots" filterBy="#{aircraft.requiredPilots}" filterMatchMode="exact" sortBy="#{aircraft.requiredPilots}">
+                    <h:outputText value="#{aircraft.requiredPilots}"/>
+                </p:column>
+
+                <p:column headerText="Crew" filterBy="#{aircraft.requiredCrew}" filterMatchMode="exact" sortBy="#{aircraft.requiredCrew}">
+                    <h:outputText value="#{aircraft.requiredCrew}"/>
+                </p:column>
+
+                <p:column headerText="Type" filterBy="#{aircraft.type}" filterMatchMode="exact" sortBy="#{aircraft.type}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('aircraft').filter()" styleClass="custom-filter" style="width: 100%;">
+                            <f:selectItem itemLabel="Select Type" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="AIRBUS A319" itemValue="AIRBUS_A319" />
+                            <f:selectItem itemLabel="AIRBUS A320" itemValue="AIRBUS_A320" />
+                            <f:selectItem itemLabel="AIRBUS A321" itemValue="AIRBUS_A321" />
+                            <f:selectItem itemLabel="BOEING 737" itemValue="BOEING_737" />
+                            <f:selectItem itemLabel="BOEING 747" itemValue="BOEING_747" />
+                            <f:selectItem itemLabel="EMBRAER 195" itemValue="EMBRAER_195" />
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{aircraft.type}" />
+                </p:column>
+
+                <p:column style="width:80px;text-align: center">
+                    <p:commandButton update=":aircraftForm:aircraftEditDialog" oncomplete="PF('aircraftEditDialog').show()" icon="pi pi-pencil">
+                        <f:setPropertyActionListener value="#{aircraft}" target="#{aircraftDetailController.aircraft}" />
+                    </p:commandButton>
+                    <p:commandButton action="#{aircraftDeletionController.deleteAircraft}" icon="pi pi-trash" update=":aircraftForm:aircraftsTable" oncomplete="">
+                        <f:setPropertyActionListener value="#{aircraft}" target="#{aircraftDeletionController.aircraft}" />
+                        <p:confirm header="Confirmation" message="Are you sure that you want to delete this aircraft? You cannot undo this operation." icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:dialog header="Edit Aircraft" id="aircraftEditDialog" widgetVar="aircraftEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="aircraftData" rendered="#{not empty aircraftDetailController.aircraft}">
+                    <p:separator />
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="seats" value="Seats: " />
+                        <p:inputText id="seats" value="#{aircraftDetailController.aircraft.seats}"/>
+                        <p:outputLabel for="requiredPilots" value="Pilots: " />
+                        <p:inputText id="requiredPilots" value="#{aircraftDetailController.aircraft.requiredPilots}"/>
+                        <p:outputLabel for="requiredCrew" value="Crew: " />
+                        <p:inputText id="requiredCrew" value="#{aircraftDetailController.aircraft.requiredCrew}"/>
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="enabled" value="Enabled: " />
+                        <p:selectBooleanCheckbox id="enabled" value="#{aircraftDetailController.aircraft.enabled}"/>
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="3">
+                        <p:commandButton value="Save" action="#{aircraftDetailController.doSaveAircraft()}" oncomplete="PF('aircraftEditDialog').hide()" update=":aircraftForm:aircraftsTable"/>
+                        <p:commandButton value="Reload" action="#{aircraftDetailController.doReloadAircraft()}" update=":aircraftForm:aircraftData"/>
+                        <p:commandButton value="Abort" onclick="PF('aircraftEditDialog').hide()"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+
+            <!-- EMail Exception -->
+            <p:ajaxExceptionHandler type="at.ac.uibk.ps_swa.ws19.gr7_2.model.exceptions.email.EMailExceptionSuperCollector"
+                                    update="EMailExceptionSuperCollectorDialog"
+                                    onexception="PF('exceptionDialog').show();" />
+
+            <p:dialog id="EMailExceptionSuperCollectorDialog" header="Error while sending E-Mails!" widgetVar="exceptionDialog"
+                      height="500px">
+                <p:ajax event="close" listener="#{aircraftDeletionController.refreshPage}" />
+                <p:scrollPanel style="width:50vw;height:70vh">
+                    <h:outputText value="#{pfExceptionHandler.message}" escape="false" />
+                    <br />
+                    <p:button onclick="document.location.href = document.location.href;"
+                              value="Reload!"
+                              rendered="#{pfExceptionHandler.type == 'at.ac.uibk.ps_swa.ws19.gr7_2.model.exceptions.email.EMailExceptionSuperCollector'}" />
+                </p:scrollPanel>
+            </p:dialog>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

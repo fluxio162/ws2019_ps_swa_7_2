@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name ="content">
+        <h:form id="userForm">
+            <p:dataTable id="usersTable" widgetVar="user" var="user" value="#{userListController.users}"  scrollable="true" scrollHeight="500" style="text-align: center">
+
+                <p:column headerText="Username" filterBy="#{user.username}" sortBy="#{user.username}">
+                    <h:outputText value="#{user.username}"/>
+                </p:column>
+
+                <p:column headerText="First Name" filterBy="#{user.firstName}" sortBy="#{user.firstName}">
+                    <h:outputText value="#{user.firstName}"/>
+                </p:column>
+
+                <p:column headerText="Last Name" filterBy="#{user.lastName}" sortBy="#{user.lastName}">
+                    <h:outputText value="#{user.lastName}"/>
+                </p:column>
+
+                <p:column headerText="Role" filterBy="#{user.roles}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('user').filter()" styleClass="custom-filter" style="width: 100%;">
+                            <f:selectItem itemLabel="Select Role" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="ADMIN" itemValue="[ADMIN]" />
+                            <f:selectItem itemLabel="MANAGER" itemValue="[MANAGER]" />
+                            <f:selectItem itemLabel="PILOT" itemValue="[PILOT]" />
+                            <f:selectItem itemLabel="CREW" itemValue="[CREW]" />
+                            <f:selectItem itemLabel="USER" itemValue="[USER]" />
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{user.roles}"/>
+                </p:column>
+
+                <p:column style="width:120px;text-align: center">
+                    <p:commandButton update=":userForm:userDetail" oncomplete="PF('userDialog').show()" title="View Detail" icon="pi pi-search">
+                        <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
+                    </p:commandButton>
+                    <p:commandButton update=":userForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-pencil">
+                        <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
+                    </p:commandButton>
+                    <p:commandButton action="#{userDeletionController.doDeleteUser}" update=":userForm:usersTable" oncomplete="" icon="pi pi-trash">
+                        <f:setPropertyActionListener value="#{user}" target="#{userDeletionController.user}" />
+                        <p:confirm header="Confirmation" message="Are you sure that you want to delete this user? You cannot undo this operation." icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog header="Edit User" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="username" value="Username: " />
+                        <p:inputText id="username" value="#{userDetailController.user.username}" disabled="true"/>
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="firstName" value="First Name: " />
+                        <p:inputText id="firstName" value="#{userDetailController.user.firstName}"/>
+                        <p:outputLabel for="firstName" value="Last Name: " />
+                        <p:inputText id="lastName" value="#{userDetailController.user.lastName}"/>
+                        <p:outputLabel for="email" value="E-Mail: " />
+                        <p:inputText id="email" value="#{userDetailController.user.email}"/>
+                        <p:outputLabel for="phone" value="Phone: " />
+                        <p:inputMask id="phone" value="#{userDetailController.user.phone}" mask="+99? 999 9999999"/>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:separator />
+                    <h:panelGrid columns="3">
+                        <p:commandButton value="Save" action="#{userDetailController.doSaveUser()}" oncomplete="PF('userEditDialog').hide()" update=":userForm:usersTable"/>
+                        <p:commandButton value="Reload" action="#{userDetailController.doReloadUser()}" update=":userForm:userData"/>
+                        <p:commandButton value="Abort" onclick="PF('userEditDialog').hide()"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+
+            <p:dialog header="User Detail" widgetVar="userDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="userDetail" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty userDetailController.user}" columnClasses="label,value">
+                        <h:outputText value="Username:" />
+                        <h:outputText value="#{userDetailController.user.username}" />
+                        <h:outputText value="Firstname:" />
+                        <h:outputText value="#{userDetailController.user.firstName}" />
+                        <h:outputText value="Lastname:" />
+                        <h:outputText value="#{userDetailController.user.lastName}" />
+                        <h:outputText value="Email:" />
+                        <h:outputText value="#{userDetailController.user.email}" />
+                        <h:outputText value="Phone:" />
+                        <h:outputText value="#{userDetailController.user.phone}" />
+                        <h:outputText value="Role:" />
+                        <h:outputText value="#{userDetailController.user.roles}" />
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+
+            <!-- EMail Exception -->
+            <p:ajaxExceptionHandler type="at.ac.uibk.ps_swa.ws19.gr7_2.model.exceptions.email.EMailExceptionSuperCollector"
+                                    update="EMailExceptionSuperCollectorDialog"
+                                    onexception="PF('exceptionDialog').show();" />
+
+            <p:dialog id="EMailExceptionSuperCollectorDialog" header="Error while sending E-Mails!" widgetVar="exceptionDialog"
+                      height="500px">
+                <p:ajax event="close" listener="#{userDeletionController.refreshPage}" />
+                <p:scrollPanel style="width:50vw;height:70vh">
+                    <h:outputText value="#{pfExceptionHandler.message}" escape="false" />
+                    <br />
+                    <p:button onclick="document.location.href = document.location.href;"
+                              value="Reload!"
+                              rendered="#{pfExceptionHandler.type == 'at.ac.uibk.ps_swa.ws19.gr7_2.model.exceptions.email.EMailExceptionSuperCollector'}" />
+                </p:scrollPanel>
+            </p:dialog>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

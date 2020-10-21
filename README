@@ -1,0 +1,25 @@
+Term Project Software Architecture WS19/20 Group 7 Team 2
+
+
+Team member:
+
+Meyer David
+Kugler Christoph
+Schenk Benedikt
+Schießl Philipp
+Wittauer Christoph
+
+
+
+This project is based on SEPM-SKEL.
+
+It utilizes Spring Boot and is configured as maven web application project with:
+ - all relevant Spring Framework features enabled
+ - embedded Tomcat with support for JSF2
+ - embedded H2 in-memory database (including H2 console)
+ - support for PrimeFaces
+ - basic functionality for user management and web security
+
+Execute  "mvn spring-boot:run" to start the project and connect to
+http://localhost:8080/ to access the web application. You may login
+with "admin" and "passwd".

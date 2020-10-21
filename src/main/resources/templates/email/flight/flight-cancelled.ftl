@@ -1,0 +1,2 @@
+<p>Your flight departing from ${departLocation} at ${departTime} and arriving at ${arrivalLocation} at ${arrivalTime} has been <strong>cancelled</strong>.</p>
+<p>The flight number of this flight was ${flightId}</p>

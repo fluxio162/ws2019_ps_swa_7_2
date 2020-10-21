@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+<ui:define name ="content">
+    <h:form id="aircraftForm">
+        <p:growl id="growl" sticky="true" showDetail="true"/>
+
+        <p:wizard style="width: 40%;">
+            <p:tab id="origin" title="Origin">
+                <p:panel>
+                    <p:messages />
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <p:outputLabel for="@next" value="Origin:" style="width:125px"/>
+                        <p:selectOneMenu id="originSelect" value="#{flightCreationController.origin}" style="width:125px" required="true">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{flightCreationController.airportList}" />
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="destination" title="Destination">
+                <p:panel>
+                    <p:messages />
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <p:outputLabel for="@next" value="Destination:" style="width:125px"/>
+                        <p:selectOneMenu id="destinationSelect" value="#{flightCreationController.destination}" style="width:125px" required="true">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{flightCreationController.airportList}" />
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="departure" title="Departure">
+                <p:panel>
+                    <p:messages />
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <p:outputLabel for="departureDate" value="Departure Date:" style="width:125px"/>
+                        <p:datePicker id="departureDate" value="#{flightCreationController.departure}" locale="de" monthNavigator="true" pattern="dd.MM.yyyy"  required="true" label="Departure Date" autocomplete="off"/>
+
+                        <p:outputLabel for="departureTime" value="Departure Time:" style="width:125px"/>
+                        <p:datePicker id="departureTime" value="#{flightCreationController.departureTime}" timeOnly="true" pattern="HH:mm"  required="true" label="Departure Time" autocomplete="off"/>
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="passenger" title="Passenger">
+                <p:panel>
+                    <p:messages />
+                    <h:panelGrid columns="1" columnClasses="label, value">
+                        <p:inputText placeholder="Passengers" value="#{flightCreationController.requiredSeats}" required="true" label="Passengers"/>
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="confirm" title="Confirmation">
+                <p:panel header="Confirmation">
+                    <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                            <h:outputText value="Origin Airport: " />
+                            <h:outputText value="#{flightCreationController.origin}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Departure Airport: " />
+                            <h:outputText value="#{flightCreationController.destination}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Departure:" />
+                            <h:outputText value="#{flightCreationController.departure}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Arrival: " />
+                            <h:outputText value="#{flightCreationController.arrival}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Passenger: " />
+                            <h:outputText value="#{flightCreationController.requiredSeats}" styleClass="outputLabel"/>
+
+                        </h:panelGrid>
+                    </h:panelGrid>
+
+                    <p:commandButton value="Submit" action="#{flightCreationController.createFlight}" update="growl" process="@this" oncomplete="PF('dlg').show()"/>
+                </p:panel>
+            </p:tab>
+        </p:wizard>
+        <p:dialog header="Basic Dialog" widgetVar="dlg1" minHeight="40">
+            <h:outputText value="#{flightCreationController.flight.aircraft.aircraftId}" />
+        </p:dialog>
+
+        <p:dialog widgetVar="dlg" showEffect="fade" hideEffect="fade" style="text-align: center" header="Confirmation">
+            <p:commandButton value="Create More" oncomplete="location.reload()" style="width: 150px"/>
+            <p:separator style="height: 10px;"/>
+            <p:commandButton value="Flight List" oncomplete="window.location.href='/manager/flight_list_planned.xhtml'" style="width: 150px"/>
+            <p:separator style="height: 10px;"/>
+            <p:commandButton value="Home" oncomplete="window.location.href='/secured/welcome.xhtml'" style="width: 150px"/>
+        </p:dialog>
+    </h:form>
+</ui:define>
+</ui:composition>

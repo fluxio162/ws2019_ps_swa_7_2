@@ -1,0 +1,98 @@
+
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+<ui:define name ="content">
+    <h:form id="aircraftForm">
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-12">
+            </div>
+            <div class="ui-g-12 ui-md-12">
+            </div>
+            <div class="ui-g-12 ui-md-12">
+            </div>
+            <div class="ui-g-12 ui-md-12">
+            </div>
+            <div class="ui-g-12 ui-md-12">
+            </div>
+            <div class="ui-g-12 ui-md-12" >
+            </div>
+            <div class="ui-g-12 ui-md-12" >
+            </div>
+            <div class="ui-g-12 ui-md-12" >
+            </div>
+
+
+            <div class="ui-g-12 ui-md-2">
+                <div class="ui-inputgroup">
+                    <span class="ui-inputgroup-addon"><i class="pi pi-user"/></span>
+                    <p:inputText placeholder="Aircraft-ID" id="aircraftid" value="#{aircraftCreationController.aircraftId}"/>
+                    <p:commandButton value="Generate" action="#{aircraftCreationController.generateAircraftId}" update="aircraftid" styleClass="white-button"/>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-2">
+                <div class="ui-inputgroup">
+                    <span class="ui-inputgroup-addon"><i class="pi pi-user"/></span>
+                    <p:inputText placeholder="Seats" id="seats" value="#{aircraftCreationController.seats}"/>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-2">
+                <div class="ui-inputgroup">
+                    <span class="ui-inputgroup-addon"><i class="pi pi-user"/></span>
+                    <p:inputText placeholder="Required Pilots" id="pilots" value="#{aircraftCreationController.requiredPilots}"/>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-2">
+                <div class="ui-inputgroup">
+                    <span class="ui-inputgroup-addon"><i class="pi pi-user"/></span>
+                    <p:inputText placeholder="Required Crew" id="crew" value="#{aircraftCreationController.requiredCrew}">
+                    </p:inputText>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-2">
+                <div class="ui-inputgroup">
+                    <p:selectOneMenu id="type" value="#{aircraftCreationController.type}" style="width:250px">
+                        <f:selectItem itemLabel="Select Aircraft Type" itemValue="" />
+                        <f:selectItem itemLabel="AIRBUS A319" itemValue="AIRBUS_A319" />
+                        <f:selectItem itemLabel="AIRBUS A320" itemValue="AIRBUS_A320" />
+                        <f:selectItem itemLabel="AIRBUS A321" itemValue="AIRBUS_A321" />
+                        <f:selectItem itemLabel="BOEING 737" itemValue="BOEING_737" />
+                        <f:selectItem itemLabel="BOEING 747" itemValue="BOEING_747" />
+                        <f:selectItem itemLabel="EMBRAER 195" itemValue="EMBRAER_195" />
+                        <p:ajax event="change" listener="#{aircraftCreationController.validateAircraft}" update="saveButton"/>
+                    </p:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-2">
+                <p:commandButton value="Save" id="saveButton" action="#{aircraftCreationController.doSaveAircraft()}" oncomplete="PF('dlg').show()" disabled="#{aircraftCreationController.disableSaveButton}"/>
+            </div>
+
+            <div class="ui-g-12 ui-md-12">
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate />
+                </p:messages>
+            </div>
+
+            <p:dialog header="Success" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+                <h:outputLabel value="Aircraft successfully created!" />
+                <p:separator style="height: 10px;"/>
+                <p:commandButton value="Create More" oncomplete="location.reload()" />
+                <p:separator style="height: 10px;"/>
+                <p:commandButton value="Aircraft List" oncomplete="window.location.href='/manager/aircraft_list.xhtml'"/>
+                <p:separator style="height: 10px;"/>
+                <p:commandButton value="Home" oncomplete="window.location.href='/secured/welcome.xhtml'"/>
+            </p:dialog>
+
+        </div>
+    </h:form>
+</ui:define>
+</ui:composition>

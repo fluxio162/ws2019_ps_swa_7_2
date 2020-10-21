@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name ="content">
+                <form id="login_form" action="#{request.contextPath}/login" method="post">
+                    <div class="ui-g ui-fluid" style="height: 100%">
+                        <div class="ui-g-12 ui-md-12">
+                        </div>
+                        <div class="ui-g-12 ui-md-12">
+                        </div>
+                        <div class="ui-g-12 ui-md-12">
+                        </div>
+                        <div class="ui-g-12 ui-md-12">
+                        </div>
+                        <div class="ui-g-12 ui-md-12">
+                        </div>
+                        <div class="ui-g-12 ui-md-12">
+                        </div>
+                        <div class="ui-g-12 ui-md-12">
+                        </div>
+                        <div class="ui-g-12 ui-md-12">
+                        </div>
+                        <div class="ui-g-12 ui-md-12">
+                        </div>
+                        <div class="ui-g-12 ui-md-12">
+                        </div>
+                        <div class="ui-g-12 ui-md-12">
+                        </div>
+                        <div class="ui-g-12 ui-md-5">
+                        </div>
+
+                        <div class="ui-g-12 ui-md-3">
+                        <p:panelGrid rendered="#{!sessionInfoBean.loggedIn}" styleClass="ui-noborder" style="opacity: 0.9">
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="username" value="Username:"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="username" type="text" required="true" placeholder="username"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="password" value="Password:"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="password" type="password" required="true" placeholder="password"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column colspan="2">
+                                    <button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                                        <span class="ui-button-text">Login</span>
+                                    </button>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        </div>
+                    </div>
+                </form>
+    </ui:define>
+</ui:composition>

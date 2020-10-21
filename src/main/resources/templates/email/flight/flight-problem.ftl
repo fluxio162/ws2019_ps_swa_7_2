@@ -1,0 +1,2 @@
+<p>Your flight ${flightId} departing from ${departLocation} at ${departTime} and arriving at ${arrivalLocation} at ${arrivalTime}
+    has <strong>encountered</strong> a problem during scheduling. It has been set to an <em>incomplete</em> state.</p>

@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name ="content">
+        <h:form id="flightForm">
+            <p:dataTable id="flightsTable" var="flight" value="#{flightListController.currentFlights}" widgetVar="flight" scrollable="true" scrollHeight="500" style="text-align: center">
+
+            <p:column headerText="Flightnumber" filterBy="#{flight.flightId}" sortBy="#{flight.flightId}">
+                <h:outputText value="#{flight.flightId}"/>
+            </p:column>
+
+            <p:column headerText="Departure Airport" filterBy="#{flight.originAirport.iataCode}" sortBy="#{flight.originAirport.iataCode}">
+                <h:outputText value="#{flight.originAirport.iataCode}"/>
+            </p:column>
+
+            <p:column headerText="Destination Airport" filterBy="#{flight.destinationAirport.iataCode}" sortBy="#{flight.destinationAirport.iataCode}">
+                 <h:outputText value="#{flight.destinationAirport.iataCode}"/>
+            </p:column>
+
+            <p:column headerText="Departure Time" sortBy="#{flight.departureTime}">
+                <h:outputText value="#{flight.departureTime}"/>
+            </p:column>
+
+            <p:column headerText="Destination Time" sortBy="#{flight.arrivalTime}">
+                <h:outputText value="#{flight.arrivalTime}"/>
+            </p:column>
+
+            <p:column headerText="AircraftID" filterBy="#{flight.aircraft.aircraftId}" sortBy="#{flight.aircraft.aircraftId}">
+                <h:outputText value="#{flight.aircraft.aircraftId}"/>
+            </p:column>
+
+                <p:column headerText="Pilots" filterBy="#{flight.pilots}" filterMatchMode="contains">
+                    <h:outputText value="#{flight.pilots}"/>
+                </p:column>
+
+                <p:column headerText="Crew" filterBy="#{flight.crew}" filterMatchMode="contains">
+                    <h:outputText value="#{flight.crew}"/>
+                </p:column>
+
+            <p:column headerText="Passenger Count" sortBy="#{flight.passengerCount}">
+                 <h:outputText value="#{flight.passengerCount}"/>
+            </p:column>
+
+                <p:column style="width:80px;text-align: center">
+                <p:commandButton update=":flightForm:flightDetail" oncomplete="PF('flightDialog').show()" title="View Detail" icon="pi pi-search">
+                    <f:setPropertyActionListener value="#{flight}" target="#{flightDetailController.flight}" />
+                </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog header="Flight Detail" widgetVar="flightDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="flightDetail" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty flightDetailController.flight}" columnClasses="label,value">
+                        <h:outputText value="FlightId:" />
+                        <h:outputText value="#{flightDetailController.flight.flightId}" />
+                        <h:outputText value="Origin:" />
+                        <h:outputText value="#{flightDetailController.flight.originAirport.name}" />
+                        <h:outputText value="Destination:" />
+                        <h:outputText value="#{flightDetailController.flight.destinationAirport.name}" />
+                        <h:outputText value="Aircraft:" />
+                        <h:outputText value="#{flightDetailController.flight.aircraft.aircraftId}" />
+                        <h:outputText value="Pilots:" />
+                        <h:outputText value="#{flightDetailController.flight.pilots}" />
+                        <h:outputText value="Crew:" />
+                        <h:outputText value="#{flightDetailController.flight.crew}" />
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

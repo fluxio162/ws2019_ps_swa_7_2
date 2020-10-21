@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>AIRINFO</title>
+        <h:outputStylesheet name="main.css" library="css"/>
+    </h:head>
+
+    <h:body>
+        <div id="page">
+
+            <div id="header" class="header" style="margin-top: 10px; height: 20px; position: fixed; top: 0; z-index: 100;">
+                <ui:include src="/WEB-INF/includes/header.xhtml" />
+            </div>
+
+
+            <div class="container" style="margin-top: 10%; scroll-margin: 50%">
+
+                <div class="content">
+                    <div id="content">
+                        <ui:insert name="content"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>

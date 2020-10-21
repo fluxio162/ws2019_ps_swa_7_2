@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name ="content">
+        <h:form id="userForm">
+
+            <div class="ui-g ui-fluid">
+
+                <div class="ui-g-12 ui-md-12">
+                </div>
+                <div class="ui-g-12 ui-md-12">
+                </div>
+                <div class="ui-g-12 ui-md-12">
+                </div>
+                <div class="ui-g-12 ui-md-12">
+                </div>
+                <div class="ui-g-12 ui-md-12">
+                </div>
+                <div class="ui-g-12 ui-md-12" >
+                </div>
+                <div class="ui-g-12 ui-md-12" >
+                </div>
+                <div class="ui-g-12 ui-md-12" >
+                </div>
+
+                <div class="ui-g-12 ui-md-3">
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon"><i class="pi pi-user" /></span>
+                        <p:inputText placeholder="Username" id="username" value="#{userCreationController.user.username}">
+                            <p:ajax event="blur" listener="#{userCreationController.validateUsername}" update="saveButton"/>
+                        </p:inputText>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-3">
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon"><i class="pi pi-key"/></span>
+                        <p:password placeholder="Password" id="password1" feedback="true" value="#{userCreationController.user.password}" match="password2" validatorMessage="Passwords are not the same."/>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-3">
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon"><i class="pi pi-key"/></span>
+                        <p:password placeholder="Confirm Password" id="password2" value="#{userCreationController.user.password}">
+                            <p:ajax process="password1 password2" event="blur"/>
+                        </p:password>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-3">
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon"><i class="pi pi-mobile"/></span>
+                        <p:inputMask placeholder="Phone" id="phone" value="#{userCreationController.user.phone}" mask="+99? 999 9999999"/>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-3">
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon"><i class="pi pi-user"/></span>
+                        <p:inputText placeholder="First Name" id="firstname" value="#{userCreationController.user.firstName}"/>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-3">
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon"><i class="pi pi-user"/></span>
+                        <p:inputText placeholder="Last Name" id="lastname" value="#{userCreationController.user.lastName}"/>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-3">
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon"><i class="pi pi-envelope"/></span>
+                        <p:inputText placeholder="E-Mail" id="email" value="#{userCreationController.user.email}"/>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-1">
+                    <div class="ui-inputgroup">
+                        <p:selectOneMenu id="role" value="#{userCreationController.role}" style="width:125px;">
+                            <f:selectItem itemLabel="Select Role" itemValue=""/>
+                            <f:selectItem itemLabel="Admin" itemValue="ADMIN"/>
+                            <f:selectItem itemLabel="Manager" itemValue="MANAGER"/>
+                            <f:selectItem itemLabel="Pilot" itemValue="PILOT"/>
+                            <f:selectItem itemLabel="Crew" itemValue="CREW"/>
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-2">
+                    <p:commandButton value="Save" id="saveButton" action="#{userCreationController.doSaveUser()}" oncomplete="PF('dlg').show()" disabled="#{userCreationController.disableSaveButton}"/>
+                </div>
+
+
+                <div class="ui-g-12 ui-md-12" >
+                    <p:messages id="messages" showDetail="true" closable="true">
+                        <p:autoUpdate/>
+                    </p:messages>
+                </div>
+
+                <p:dialog header="Success" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+                    <h:outputLabel value="User successfully created!" />
+                    <p:separator style="height: 10px;"/>
+                    <p:commandButton value="Create More" oncomplete="location.reload()" />
+                    <p:separator style="height: 10px;"/>
+                    <p:commandButton value="User List" oncomplete="window.location.href='/manager/user_list.xhtml'"/>
+                    <p:separator style="height: 10px;"/>
+                    <p:commandButton value="Home" oncomplete="window.location.href='/secured/welcome.xhtml'"/>
+                </p:dialog>
+
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

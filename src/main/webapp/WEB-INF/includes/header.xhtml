@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui">
+<head>
+    <title>AIRINFO</title>
+</head>
+<body>
+<ui:composition>
+    <div>
+        <h:form>
+            <p:menubar style="background-color: transparent !important;">
+                <p:menuitem value="Home" icon="pi pi-home" style="font-size: 25px !important" url="/secured/welcome.xhtml" rendered="#{sessionInfoBean.loggedIn}"/>
+
+                <p:submenu label="Admin" icon="pi pi-user" style="font-size: 25px !important" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
+                    <p:submenu label="New" icon="pi pi-plus">
+                        <p:menuitem value="Flight" url="/manager/flight_creation.xhtml" />
+                        <p:menuitem value="User" url="/admin/user_creation.xhtml" />
+                        <p:menuitem value="Aircraft" url="/manager/aircraft_creation.xhtml" />
+                        <p:menuitem value="Airport" url="/manager/airport_creation.xhtml"  />
+                    </p:submenu>
+                    <p:submenu label="Flight" icon="pi pi-globe">
+                        <p:menuitem value="All" url="/manager/flight_list.xhtml" />
+                        <p:menuitem value="Current" url="/manager/flight_list_current.xhtml" />
+                        <p:menuitem value="Planned" url="/manager/flight_list_planned.xhtml" />
+                        <p:menuitem value="Completed" url="/manager/flight_list_completed.xhtml" />
+                        <p:menuitem value="Incomplete" url="/manager/flight_list_incomplete.xhtml" />
+                        <p:menuitem value="Canceled" url="/manager/flight_list_canceled.xhtml" />
+                    </p:submenu>
+                    <p:menuitem value="User List" url="/manager/user_list.xhtml" />
+                    <p:separator />
+                    <p:menuitem value="Aircraft List" url="/manager/aircraft_list.xhtml" style="border-color: transparent"/>
+                    <p:separator />
+                    <p:menuitem value="Airport List" url="/manager/airport_list.xhtml" />
+                    <p:separator />
+                </p:submenu>
+
+                <p:submenu label="Manager" icon="pi pi-user" style="font-size: 25px !important" rendered="#{sessionInfoBean.hasRole('MANAGER') or sessionInfoBean.hasRole('ADMIN')}">
+                    <p:submenu label="New" icon="pi pi-plus">
+                        <p:menuitem value="Flight" url="/manager/flight_creation.xhtml"  />
+                        <p:menuitem value="User" url="/manager/user_creation.xhtml" />
+                        <p:menuitem value="Aircraft" url="/manager/aircraft_creation.xhtml" />
+                        <p:menuitem value="Airport" url="/manager/airport_creation.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Flight" icon="pi pi-globe">
+                        <p:menuitem value="All" url="/manager/flight_list.xhtml" />
+                        <p:menuitem value="Current" url="/manager/flight_list_current.xhtml" />
+                        <p:menuitem value="Planned" url="/manager/flight_list_planned.xhtml" />
+                        <p:menuitem value="Completed" url="/manager/flight_list_completed.xhtml" />
+                        <p:menuitem value="Incomplete" url="/manager/flight_list_incomplete.xhtml" />
+                        <p:menuitem value="Canceled" url="/manager/flight_list_canceled.xhtml" />
+                    </p:submenu>
+                    <p:menuitem value="User List" url="/manager/user_list.xhtml" />
+                    <p:separator />
+                    <p:menuitem value="Aircraft List" url="/manager/aircraft_list.xhtml" />
+                    <p:separator />
+                    <p:menuitem value="Airport List" url="/manager/airport_list.xhtml" />
+                    <p:separator />
+                </p:submenu>
+
+                <p:submenu label="Calendar" icon="pi pi-calendar" style="font-size: 25px !important" rendered="#{sessionInfoBean.loggedIn}">
+                    <p:submenu label="New" icon="pi pi-plus">
+                        <p:menuitem value="Vacation" url="/user/vacation_creation.xhtml" />
+                    </p:submenu>
+                    <p:menuitem value="Schedule" url="/user/schedule.xhtml" />
+                </p:submenu>
+
+                <p:menuitem value="Logout" icon="pi pi-sign-out" style="font-size: 25px !important" url="/logout" rendered="#{sessionInfoBean.loggedIn}"/>
+
+                <p:menuitem value="Login" icon="pi pi-sign-out" style="font-size: 25px !important" url="/login.xhtml" rendered="#{!sessionInfoBean.loggedIn}"/>
+            </p:menubar>
+        </h:form>
+    </div>
+
+</ui:composition>
+</body>
+</html>
+

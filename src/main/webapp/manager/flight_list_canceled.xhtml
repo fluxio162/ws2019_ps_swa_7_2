@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name ="content">
+        <h:form id="flightForm">
+            <p:dataTable id="flightsTable" var="flight" value="#{flightListController.canceledFlights}" widgetVar="flight" scrollable="true" scrollHeight="500" style="text-align: center">
+
+            <p:column headerText="Flightnumber" filterBy="#{flight.flightId}" sortBy="#{flight.flightId}">
+                <h:outputText value="#{flight.flightId}"/>
+            </p:column>
+
+            <p:column headerText="Departure Airport" filterBy="#{flight.originAirport.iataCode}" sortBy="#{flight.originAirport.iataCode}">
+                <h:outputText value="#{flight.originAirport.iataCode}"/>
+            </p:column>
+
+            <p:column headerText="Destination Airport" filterBy="#{flight.destinationAirport.iataCode}" sortBy="#{flight.destinationAirport.iataCode}">
+                 <h:outputText value="#{flight.destinationAirport.iataCode}"/>
+            </p:column>
+
+            <p:column headerText="Departure Time" sortBy="#{flight.departureTime}">
+                <h:outputText value="#{flight.departureTime}"/>
+            </p:column>
+
+            <p:column headerText="Destination Time" sortBy="#{flight.arrivalTime}">
+                <h:outputText value="#{flight.arrivalTime}"/>
+            </p:column>
+
+        </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

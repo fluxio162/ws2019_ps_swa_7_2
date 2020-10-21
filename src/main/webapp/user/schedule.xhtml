@@ -1,0 +1,22 @@
+<ui:composition
+        xmlns="http://www.w3c.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        template="/WEB-INF/templates/main.xhtml">
+
+
+    <ui:define name="content">
+        <h:form style="align-content: center">
+            <p:growl id="messages" showDetail="true"/>
+            <div class="ui-g-12 ui-md-3"> </div>
+            <h:panelGrid columnClasses="value">
+                <p:schedule id="schedule" value="#{schedule.eventModel}" widgetVar="AirInfo schedule" style="width: 70%;" timeZone="GMT+1" timeFormat=" " draggable="false" > </p:schedule>
+            </h:panelGrid>
+
+            <p:commandButton value="Print" type="button" icon="pi pi-print" style="display:block;margin-bottom: 20px">
+                <p:printer target="schedule" />
+            </p:commandButton>
+        </h:form>
+    </ui:define>
+</ui:composition>

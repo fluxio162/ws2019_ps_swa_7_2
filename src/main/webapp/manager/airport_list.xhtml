@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name ="content">
+        <h:form id="airportForm">
+            <p:dataTable id="airportsTable" var="airport" value="#{airportListController.airports}" widgetVar="airport" scrollable="true" scrollHeight="500" style="text-align: center">
+                <p:column headerText="Name" filterBy="#{airport.name}" sortBy="#{airport.name}">
+                    <h:outputText value="#{airport.name}"/>
+                </p:column>
+                <p:column headerText="Country" filterBy="#{airport.country}" sortBy="#{airport.country}">
+                    <h:outputText value="#{airport.country}"/>
+                </p:column>
+                <p:column headerText="IataCode" filterBy="#{airport.iataCode}" sortBy="#{airport.iataCode}">
+                    <h:outputText value="#{airport.iataCode}"/>
+                </p:column>
+
+                <p:column style="width: 40px">
+                    <p:commandButton action="#{airportDeletionController.doDeleteAirport}" icon="pi pi-trash" update=":airportForm:airportsTable" oncomplete="">
+                        <f:setPropertyActionListener value="#{airport}" target="#{airportDeletionController.airport}" />
+                        <p:confirm header="Confirmation" message="Are you sure that you want to delete this airport? You cannot undo this operation." icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+
+            <!-- EMail Exception -->
+            <p:ajaxExceptionHandler type="at.ac.uibk.ps_swa.ws19.gr7_2.model.exceptions.email.EMailExceptionSuperCollector"
+                                    update="EMailExceptionSuperCollectorDialog"
+                                    onexception="PF('exceptionDialog').show();" />
+
+            <p:dialog id="EMailExceptionSuperCollectorDialog" header="Error while sending E-Mails!" widgetVar="exceptionDialog"
+                      height="500px">
+                <p:ajax event="close" listener="#{airportDeletionController.refreshPage}" />
+                <p:scrollPanel style="width:50vw;height:70vh">
+                    <h:outputText value="#{pfExceptionHandler.message}" escape="false" />
+                    <br />
+                    <p:button onclick="document.location.href = document.location.href;"
+                              value="Reload!"
+                              rendered="#{pfExceptionHandler.type == 'at.ac.uibk.ps_swa.ws19.gr7_2.model.exceptions.email.EMailExceptionSuperCollector'}" />
+                </p:scrollPanel>
+            </p:dialog>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

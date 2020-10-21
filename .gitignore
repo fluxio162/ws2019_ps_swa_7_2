@@ -1,0 +1,9 @@
+/target/
+/src/main/webapp/WEB-INF/classes/
+
+# IntelliJ project files
+/.idea
+*.iml
+
+# log files
+logs/

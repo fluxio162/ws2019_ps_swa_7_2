@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+<ui:define name ="content">
+    <h:form id="aircraftForm">
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-12">
+            </div>
+            <div class="ui-g-12 ui-md-12">
+            </div>
+            <div class="ui-g-12 ui-md-12">
+            </div>
+            <div class="ui-g-12 ui-md-12">
+            </div>
+            <div class="ui-g-12 ui-md-12">
+            </div>
+            <div class="ui-g-12 ui-md-12" >
+            </div>
+            <div class="ui-g-12 ui-md-12" >
+            </div>
+            <div class="ui-g-12 ui-md-12" >
+            </div>
+            <div class="ui-g-12 ui-md-2" >
+            </div>
+
+            <div class="ui-g-12 ui-md-2">
+                <div class="ui-inputgroup">
+                    <span class="ui-inputgroup-addon"><i class="pi pi-user"/></span>
+                    <p:inputText placeholder="IATA Code" id="iataCode" value="#{airportCreationController.iataCode}">
+                    <p:ajax event="blur" listener="#{airportCreationController.validateIataCode}" update="saveButton"/>
+                    </p:inputText>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-2">
+                <div class="ui-inputgroup">
+                    <span class="ui-inputgroup-addon"><i class="pi pi-user"/></span>
+                    <p:inputText placeholder="Name" id="name" value="#{airportCreationController.name}"/>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-2">
+                <div class="ui-inputgroup">
+                    <span class="ui-inputgroup-addon"><i class="pi pi-user"/></span>
+                    <p:inputText placeholder="Country" id="country" value="#{airportCreationController.country}"/>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-2">
+                <p:commandButton value="Save" id="saveButton" action="#{airportCreationController.doSaveAirport}" oncomplete="PF('dlg').show()" disabled="#{airportCreationController.disableSaveButton}"/>
+            </div>
+
+            <div class="ui-g-12 ui-md-1" >
+            </div>
+            <div class="ui-g-12 ui-md-2" >
+            </div>
+
+            <div class="ui-g-12 ui-md-8">
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate />
+                </p:messages>
+            </div>
+
+            <p:dialog header="Success" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+                <h:outputLabel value="Airport successfully created!" />
+                <p:separator style="height: 10px;"/>
+                <p:commandButton value="Create More" oncomplete="location.reload()" />
+                <p:separator style="height: 10px;"/>
+                <p:commandButton value="Airport List" oncomplete="window.location.href='/manager/airport_list.xhtml'"/>
+                <p:separator style="height: 10px;"/>
+                <p:commandButton value="Home" oncomplete="window.location.href='/secured/welcome.xhtml'"/>
+            </p:dialog>
+
+        </div>
+    </h:form>
+</ui:define>
+</ui:composition>
